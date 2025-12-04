@@ -5,89 +5,79 @@
 <title>Family Secret Santa</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:sans-serif}
-body{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#b30000,#5a0000);color:#fff;padding:16px;overflow:hidden;position:relative}
-.card{width:100%;max-width:420px;background:rgba(120,0,0,0.92);border-radius:20px;padding:20px 18px;box-shadow:0 14px 35px rgba(0,0,0,0.35);border:2px solid rgba(255,255,255,0.25)}
-.card-header{text-align:center;margin-bottom:16px}
-.title{font-size:26px;font-weight:700}
-.subtitle{font-size:14px;opacity:.9;margin-top:4px}
-.santa-emoji{font-size:42px;margin-bottom:4px}
-.form-group{margin-top:12px}
-label{font-size:14px;opacity:.9;margin-bottom:4px;display:block}
-select,input{width:100%;padding:8px 10px;border-radius:999px;border:none;font-size:15px}
-.btn{width:100%;margin-top:14px;padding:10px 12px;border-radius:999px;border:none;font-size:15px;font-weight:700;background:#ffd166;color:#7a0a0a}
-.message{margin-top:12px;min-height:18px;font-size:14px}
-.result-card{margin-top:16px;background:rgba(255,255,255,0.1);border-radius:16px;padding:14px;border:1px solid rgba(255,255,255,0.25);display:none;font-size:16px;text-align:center}
-.snowflake{position:fixed;top:-10px;color:#fff;font-size:16px;opacity:.7;animation:snow 10s linear infinite}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif;}
+body{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#b30000,#5a0000);color:#fff;padding:16px;overflow:hidden;position:relative;}
+.card{width:100%;max-width:420px;background:rgba(120,0,0,0.92);border-radius:20px;padding:20px 18px;box-shadow:0 14px 35px rgba(0,0,0,0.35);border:2px solid rgba(255,255,255,0.25);}
+.title{text-align:center;font-size:26px;font-weight:700;}
+.subtitle{text-align:center;font-size:13px;opacity:.9;margin-bottom:14px;}
+select,input{width:100%;padding:8px 10px;border-radius:999px;border:none;margin-top:6px;font-size:14px;}
+.btn{width:100%;margin-top:14px;padding:10px;border-radius:999px;background:#ffd166;color:#650000;font-weight:700;font-size:15px;}
+.message{font-size:14px;margin-top:8px;min-height:18px;}
+.result-card{display:none;margin-top:16px;background:rgba(255,255,255,0.15);padding:14px;border-radius:16px;font-size:16px;text-align:center;border:1px solid rgba(255,255,255,0.25);}
+.santa-emoji{text-align:center;font-size:40px;margin-bottom:8px;}
+.snowflake{position:fixed;top:-10px;color:#fff;opacity:.7;font-size:14px;animation:snow 10s linear infinite;}
 @keyframes snow{0%{transform:translateY(-10vh)}100%{transform:translateY(110vh)}}
 </style>
 </head>
-
 <body>
+
 <div class="card">
- <div class="card-header">
-   <div class="santa-emoji">🎅</div>
-   <div class="title">Secret Santa Mission</div>
-   <div class="subtitle">Enter your name & password 🤫</div>
- </div>
+  <div class="santa-emoji">🎅</div>
+  <div class="title">Secret Santa Mission</div>
+  <div class="subtitle">Enter your name & password 🤫</div>
 
- <div class="form-group">
-   <label>Your Name</label>
-   <select id="name">
-     <option value="">-- Select --</option>
-     <option>Akhil</option>
-     <option>Pandu</option>
-     <option>Honey</option>
-     <option>Sony</option>
-     <option>Bhanu</option>
-     <option>Sichi</option>
-     <option>Narshima Rao</option>
-     <option>Bhayarekha</option>
-     <option>Chintu</option>
-     <option>Pinky</option>
-     <option>Sravanti</option>
-     <option>Bintu</option>
-     <option>Bharath</option>
-     <option>Blessy</option>
-     <option>Veeri</option>
-     <option>Sneha</option>
-     <option>Ramani</option>
-     <option>Mercy</option>
-   </select>
- </div>
+  <label>Your Name</label>
+  <select id="name">
+    <option value="">-- Select --</option>
+    <option>Akhil</option>
+    <option>Pandu</option>
+    <option>Honey</option>
+    <option>Sony</option>
+    <option>Bhanu</option>
+    <option>Sichi</option>
+    <option>Narshima Rao</option>
+    <option>Bhayarekha</option>
+    <option>Chintu</option>
+    <option>Pinky</option>
+    <option>Sravanti</option>
+    <option>Bintu</option>
+    <option>Bharath</option>
+    <option>Blessy</option>
+    <option>Veeri</option>
+    <option>Sneha</option>
+    <option>Ramani</option>
+    <option>Mercy</option>
+  </select>
 
- <div class="form-group">
-   <label>Password</label>
-   <input type="password" id="password" placeholder="Enter your password">
- </div>
+  <label>Password</label>
+  <input type="password" id="password">
 
- <button class="btn" onclick="revealSanta()">Reveal 🎁</button>
-
- <div id="message" class="message"></div>
- <div id="result" class="result-card"></div>
+  <button class="btn" onclick="revealSanta()">Reveal 🎁</button>
+  <div id="message" class="message"></div>
+  <div id="result" class="result-card"></div>
 </div>
 
 <script>
-// FINAL MATCH LIST
+// FINAL FIXED SECRET SANTA ASSIGNMENTS
 const assignments={
- "Akhil":"Mercy",
- "Pandu":"Honey",
- "Honey":"Sneha",
- "Sony":"Akhil",
- "Bhanu":"Sravanti",
- "Sichi":"Bhayarekha",
+ "Akhil":"Pinky",
+ "Pandu":"Sneha",
+ "Honey":"Chintu",
+ "Sony":"Mercy",
+ "Bhanu":"Ramani",
+ "Sichi":"Sravanti",
  "Narshima Rao":"Veeri",
- "Bhayarekha":"Bharath",
- "Chintu":"Bintu",
+ "Bhayarekha":"Blessy",
+ "Chintu":"Bharath",
  "Pinky":"Pandu",
- "Sravanti":"Ramani",
- "Bintu":"Blessy",
- "Bharath":"Chintu",
- "Blessy":"Sony",
- "Veeri":"Sneha",
- "Sneha":"Bhanu",
- "Ramani":"Sichi",
- "Mercy":"Narshima Rao"
+ "Sravanti":"Honey",
+ "Bintu":"Akhil",
+ "Bharath":"Bhanu",
+ "Blessy":"Sichi",
+ "Veeri":"Sony",
+ "Sneha":"Bintu",
+ "Ramani":"Narshima Rao",
+ "Mercy":"Bhayarekha",
 };
 
 // PASSWORDS
@@ -101,54 +91,44 @@ const passwords={
 };
 
 function speak(text){
- const voice=new SpeechSynthesisUtterance(text);
- voice.rate=0.95; voice.pitch=1; 
- speechSynthesis.speak(voice);
+ const u=new SpeechSynthesisUtterance(text);
+ u.rate=0.95;u.pitch=1;
+ speechSynthesis.speak(u);
 }
 
 function revealSanta(){
  const name=document.getElementById("name").value;
  const pwd=document.getElementById("password").value;
- const msg=document.getElementById("message");
- const res=document.getElementById("result");
+ const message=document.getElementById("message");
+ const result=document.getElementById("result");
+ message.textContent="";result.style.display="none";
 
- msg.textContent="";
- res.style.display="none";
-
- if(!name){msg.textContent="Select name";return;}
- if(passwords[name]!==pwd){msg.textContent="Wrong password ❌";return;}
+ if(!name){message.textContent="Select your name";return;}
+ if(passwords[name]!==pwd){message.textContent="Wrong password ❌";return;}
 
  const key="SS_"+name;
  if(localStorage.getItem(key)){
-   msg.textContent="Already revealed 😉";
+   message.textContent="Already revealed earlier! 😉";
  } else {
-   localStorage.setItem(key,"1");
-   msg.textContent="Secret unlocked 🎄";
+   localStorage.setItem(key,true);
+   message.textContent="Secret unlocked 🎄";
  }
 
- const target=assignments[name];
- const card=`
- 🎅 Hey hey hey! Ho Ho Ho!<br><br>
- Merry Christmas <b>${name}</b>! 🎄<br><br>
- Your Secret Santa mission is:<br>
- 👉 You will gift <b>${target}</b>! 🎁<br><br>
- Keep it secret 🤫✨
- `;
- res.innerHTML=card;
- res.style.display="block";
+ const t=assignments[name];
+ result.innerHTML=`🎅 <b>Merry Christmas ${name}!</b><br><br>
+ Your Secret Santa mission is:<br><b>${t}</b> 🎁<br><br>Keep it secret 🤫✨`;
+ result.style.display="block";
 
- const speech="Merry Christmas "+name+"! You are the Secret Santa for "+target+"! Keep it a secret and spread joy everywhere!";
- speak(speech);
+ speak("Merry Christmas "+name+"! You are the Secret Santa for "+t+". Ho Ho Ho!");
 }
 
-// ❄ SNOW
-for(let i=0;i<35;i++){
+// SNOW
+for(let i=0;i<40;i++){
  let s=document.createElement("div");
- s.textContent="❄";
- s.className="snowflake";
+ s.textContent="❄";s.className="snowflake";
  s.style.left=Math.random()*100+"vw";
  s.style.animationDuration=(Math.random()*6+4)+"s";
- s.style.fontSize=(Math.random()*20+10)+"px";
+ s.style.fontSize=(Math.random()*18+10)+"px";
  document.body.appendChild(s);
 }
 </script>
