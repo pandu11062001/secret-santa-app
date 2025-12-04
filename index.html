@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8">
 <title>Family Secret Santa</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
@@ -17,24 +17,24 @@ label{font-size:14px;opacity:.9;margin-bottom:4px;display:block}
 select,input{width:100%;padding:8px 10px;border-radius:999px;border:none;font-size:15px}
 .btn{width:100%;margin-top:14px;padding:10px 12px;border-radius:999px;border:none;font-size:15px;font-weight:700;background:#ffd166;color:#7a0a0a}
 .message{margin-top:12px;min-height:18px;font-size:14px}
-.result-card{margin-top:16px;background:rgba(255,255,255,0.1);border-radius:16px;padding:14px;border:1px solid rgba(255,255,255,0.25);display:none}
+.result-card{margin-top:16px;background:rgba(255,255,255,0.1);border-radius:16px;padding:14px;border:1px solid rgba(255,255,255,0.25);display:none;font-size:16px;text-align:center}
 .snowflake{position:fixed;top:-10px;color:#fff;font-size:16px;opacity:.7;animation:snow 10s linear infinite}
 @keyframes snow{0%{transform:translateY(-10vh)}100%{transform:translateY(110vh)}}
 </style>
 </head>
-<body>
 
+<body>
 <div class="card">
  <div class="card-header">
    <div class="santa-emoji">🎅</div>
    <div class="title">Secret Santa Mission</div>
-   <div class="subtitle">Enter your name & your password 🤫</div>
+   <div class="subtitle">Enter your name & password 🤫</div>
  </div>
 
  <div class="form-group">
    <label>Your Name</label>
    <select id="name">
-     <option value="">-- Select your name --</option>
+     <option value="">-- Select --</option>
      <option>Akhil</option>
      <option>Pandu</option>
      <option>Honey</option>
@@ -51,6 +51,8 @@ select,input{width:100%;padding:8px 10px;border-radius:999px;border:none;font-si
      <option>Blessy</option>
      <option>Veeri</option>
      <option>Sneha</option>
+     <option>Ramani</option>
+     <option>Mercy</option>
    </select>
  </div>
 
@@ -66,65 +68,87 @@ select,input{width:100%;padding:8px 10px;border-radius:999px;border:none;font-si
 </div>
 
 <script>
+// FINAL MATCH LIST
 const assignments={
- "Akhil":"Blessy",
- "Pandu":"Chintu",
- "Honey":"Bhanu",
- "Sony":"Sneha",
+ "Akhil":"Mercy",
+ "Pandu":"Honey",
+ "Honey":"Sneha",
+ "Sony":"Akhil",
  "Bhanu":"Sravanti",
- "Sichi":"Akhil",
- "Narshima Rao":"Pinky",
- "Bhayarekha":"Honey",
- "Chintu":"Bharath",
- "Pinky":"Narshima Rao",
- "Sravanti":"Sony",
- "Bintu":"Veeri",
- "Bharath":"Bintu",
- "Blessy":"Pandu",
- "Veeri":"Bhayarekha",
- "Sneha":"Sichi"
+ "Sichi":"Bhayarekha",
+ "Narshima Rao":"Veeri",
+ "Bhayarekha":"Bharath",
+ "Chintu":"Bintu",
+ "Pinky":"Pandu",
+ "Sravanti":"Ramani",
+ "Bintu":"Blessy",
+ "Bharath":"Chintu",
+ "Blessy":"Sony",
+ "Veeri":"Sneha",
+ "Sneha":"Bhanu",
+ "Ramani":"Sichi",
+ "Mercy":"Narshima Rao"
 };
 
+// PASSWORDS
 const passwords={
  "Akhil":"AK25","Pandu":"PD25","Honey":"HN25",
  "Sony":"SY25","Bhanu":"BH25","Sichi":"SC25",
  "Narshima Rao":"NR25","Bhayarekha":"BR25",
  "Chintu":"CH25","Pinky":"PK25","Sravanti":"SR25",
  "Bintu":"BT25","Bharath":"BA25","Blessy":"BL25",
- "Veeri":"VR25","Sneha":"SN25"
+ "Veeri":"VR25","Sneha":"SN25","Ramani":"RM25","Mercy":"MC25"
 };
+
+function speak(text){
+ const voice=new SpeechSynthesisUtterance(text);
+ voice.rate=0.95; voice.pitch=1; 
+ speechSynthesis.speak(voice);
+}
 
 function revealSanta(){
  const name=document.getElementById("name").value;
  const pwd=document.getElementById("password").value;
  const msg=document.getElementById("message");
  const res=document.getElementById("result");
- if(!name)return msg.textContent="Select name";
- if(passwords[name]!==pwd)return msg.textContent="Wrong password ❌";
+
+ msg.textContent="";
+ res.style.display="none";
+
+ if(!name){msg.textContent="Select name";return;}
+ if(passwords[name]!==pwd){msg.textContent="Wrong password ❌";return;}
 
  const key="SS_"+name;
- if(localStorage.getItem(key))msg.textContent="Already revealed 😉";
- else{localStorage.setItem(key,"1");msg.textContent="Secret unlocked! 🎄";}
+ if(localStorage.getItem(key)){
+   msg.textContent="Already revealed 😉";
+ } else {
+   localStorage.setItem(key,"1");
+   msg.textContent="Secret unlocked 🎄";
+ }
 
- const t=assignments[name];
+ const target=assignments[name];
+ const card=`
+ 🎅 Hey hey hey! Ho Ho Ho!<br><br>
+ Merry Christmas <b>${name}</b>! 🎄<br><br>
+ Your Secret Santa mission is:<br>
+ 👉 You will gift <b>${target}</b>! 🎁<br><br>
+ Keep it secret 🤫✨
+ `;
+ res.innerHTML=card;
  res.style.display="block";
- res.innerHTML=`🎅 Hey hey hey! Merry Christmas ${name}!<br>🎁 You are Secret Santa for <b>${t}</b>!<br>Ho Ho Ho!`;
- speak();
+
+ const speech="Merry Christmas "+name+"! You are the Secret Santa for "+target+"! Keep it a secret and spread joy everywhere!";
+ speak(speech);
 }
 
-function speak(){
- const u=new SpeechSynthesisUtterance("Ho Ho Ho! Merry Christmas!");
- speechSynthesis.speak(u);
-}
-
-// snowflakes
+// ❄ SNOW
 for(let i=0;i<35;i++){
  let s=document.createElement("div");
  s.textContent="❄";
  s.className="snowflake";
  s.style.left=Math.random()*100+"vw";
- s.style.animationDuration=(Math.random()*4+4)+"s";
- s.style.fontSize=(Math.random()*18+8)+"px";
+ s.style.animationDuration=(Math.random()*6+4)+"s";
+ s.style.fontSize=(Math.random()*20+10)+"px";
  document.body.appendChild(s);
 }
 </script>
